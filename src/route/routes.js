@@ -4,6 +4,7 @@ import { authRouter } from "../module/auth/auth.router.js";
 import { productRouter } from "../module/product/product.route.js";
 import { contactRouter } from "../module/contact/contact.router.js";
 import { featuresRouter } from "../module/features/features.route.js";
+import { stripePayRoute } from "../module/stripePay/stripePay.route.js";
 
 const router = Router();
 
@@ -27,6 +28,10 @@ const moduleRouter = [
   {
     path: "/features",
     router: featuresRouter,
+  },
+  {
+    path: "/stripe-pay",
+    router: stripePayRoute,
   },
 ];
 
