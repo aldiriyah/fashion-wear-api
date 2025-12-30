@@ -20,7 +20,7 @@ app.use(
         "http://localhost:3000",
         "http://localhost:3001",
         "http://82.29.161.232:4005",
-        "https://smart-wear-five.vercel.app",
+        "https://smart-wear-fashion.vercel.app",
       ];
 
       if (!origin) return callback(null, true);
