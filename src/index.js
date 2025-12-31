@@ -19,7 +19,7 @@ app.use(
       const allowedOrigins = [
         "http://localhost:3000",
         "http://localhost:3001",
-        "http://77.42.74.88:4000"
+        "http://77.42.74.88:4000",
         "https://smart-wear-fashion.vercel.app",
       ];
 
