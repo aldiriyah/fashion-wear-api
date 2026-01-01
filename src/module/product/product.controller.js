@@ -6,12 +6,13 @@ import cloudinary from "../../utils/cloudinary.js";
 import AppError from "../../error/appError.js";
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const { title, price, description, discount, link,productType } = req.body;
-  
+  const { title, price, description, discount, link, productType } = req.body;
 
   if (!req.file) {
     throw new AppError("Please upload an image", status.BAD_REQUEST);
   }
+
+  console.log("req.file", req.file);
 
   let imageUrl = "";
 
@@ -23,9 +24,10 @@ export const createProduct = asyncHandler(async (req, res) => {
         resource_type: "image",
       }
     );
+    console.log("result", result);
     imageUrl = result.secure_url;
   } catch (cloudinaryError) {
-    // console.error('Cloudinary upload error:', cloudinaryError);
+    console.error("Cloudinary upload error:", cloudinaryError);
     throw new AppError("Image upload failed", status.INTERNAL_SERVER_ERROR);
   }
 
@@ -36,7 +38,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     discount: discount ? Number(discount) : 0,
     image: imageUrl,
     link,
-    productType
+    productType,
   });
 
   // console.log("Product created:", product);
@@ -94,7 +96,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
 const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { title, price, description, discount, link,productType } = req.body;
+  const { title, price, description, discount, link, productType } = req.body;
 
   if (!id) {
     throw new AppError("Product id is required", status.BAD_REQUEST);
@@ -140,7 +142,7 @@ const updateProduct = asyncHandler(async (req, res) => {
       discount: discount ? Number(discount) : product.discount,
       image: imageUrl,
       link,
-      productType
+      productType,
     },
     { new: true }
   );
