@@ -20,6 +20,7 @@ app.use(
         "http://localhost:3000",
         "http://localhost:3001",
         "http://77.42.74.88:4000",
+        "https://ziras.shop",
         "https://smart-wear-fashion.vercel.app",
       ];
 
