@@ -124,18 +124,3 @@ const footerSchema = new mongoose.Schema(
 
 export const Footer = mongoose.model("Footer", footerSchema);
 
-const BannerSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    default: "Smartwear Outfits",
-  },
-  image: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
-});
-
-export const Banner = mongoose.model("Banner", BannerSchema);

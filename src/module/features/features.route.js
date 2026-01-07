@@ -9,12 +9,12 @@ router.post(
   upload.single("logo"),
   featuresController.createAndUpdateFooter
 );
-router.post(
-  "/create-banner",
-  upload.array("image", 3),
-  featuresController.createBannerAndUpdate
-);
-router.get("/find-banner", featuresController.findBanner);
+// router.post(
+//   "/create-banner",
+//   upload.array("image", 3),
+//   featuresController.createBannerAndUpdate
+// );
+// router.get("/find-banner", featuresController.findBanner);
 router.get("/get-footer", featuresController.findFooter);
 
 export const featuresRouter = router;

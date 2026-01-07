@@ -5,6 +5,7 @@ import { productRouter } from "../module/product/product.route.js";
 import { contactRouter } from "../module/contact/contact.router.js";
 import { featuresRouter } from "../module/features/features.route.js";
 import { stripePayRoute } from "../module/stripePay/stripePay.route.js";
+import { bannerRouter } from "../module/banner/banner.route.js";
 
 const router = Router();
 
@@ -16,6 +17,10 @@ const moduleRouter = [
   {
     path: "/auth",
     router: authRouter,
+  },
+  {
+    path: "/banner",
+    router: bannerRouter,
   },
   {
     path: "/product",

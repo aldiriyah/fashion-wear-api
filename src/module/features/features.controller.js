@@ -3,7 +3,7 @@ import sendResponse from "../../utils/sendResponse.js";
 import AppError from "../../error/appError.js";
 import cloudinary from "../../utils/cloudinary.js";
 import status from "http-status";
-import { Banner, Footer } from "./features.model.js";
+import {  Footer } from "./features.model.js";
 
 const createAndUpdateFooter = asyncHandler(async (req, res) => {
   const { title } = req.body;
@@ -70,71 +70,71 @@ const createAndUpdateFooter = asyncHandler(async (req, res) => {
   });
 });
 
-const createBannerAndUpdate = asyncHandler(async (req, res) => {
-  if (!req.files || req.files.length === 0) {
-    throw new AppError("Please upload at least one image", status.BAD_REQUEST);
-  }
+// const createBannerAndUpdate = asyncHandler(async (req, res) => {
+//   if (!req.files || req.files.length === 0) {
+//     throw new AppError("Please upload at least one image", status.BAD_REQUEST);
+//   }
 
-  const existingBanner = await Banner.findOne({ title: "Smartwear Outfits" });
+//   const existingBanner = await Banner.findOne({ title: "Smartwear Outfits" });
 
-  const bannerUrls = [];
-  for (const file of req.files) {
-    try {
-      const result = await cloudinary.uploader.upload(
-        `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
-        {
-          folder: "banner",
-          resource_type: "image",
-        }
-      );
-      bannerUrls.push(result.secure_url);
-    } catch {
-      throw new AppError("Image upload failed", status.INTERNAL_SERVER_ERROR);
-    }
-  }
+//   const bannerUrls = [];
+//   for (const file of req.files) {
+//     try {
+//       const result = await cloudinary.uploader.upload(
+//         `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
+//         {
+//           folder: "banner",
+//           resource_type: "image",
+//         }
+//       );
+//       bannerUrls.push(result.secure_url);
+//     } catch {
+//       throw new AppError("Image upload failed", status.INTERNAL_SERVER_ERROR);
+//     }
+//   }
 
-  let banner;
+//   let banner;
 
-  if (existingBanner) {
-    // ✅ Append new images to the existing array
-    banner = await Banner.findOneAndUpdate(
-      { title: "Smartwear Outfits" },
-      { $push: { image: { $each: bannerUrls } } },
-      { new: true }
-    );
-  } else {
-    // ✅ Create new banner
-    banner = await Banner.create({
-      title: "Smartwear Outfits",
-      image: bannerUrls,
-    });
-  }
+//   if (existingBanner) {
+//     // ✅ Append new images to the existing array
+//     banner = await Banner.findOneAndUpdate(
+//       { title: "Smartwear Outfits" },
+//       { $push: { image: { $each: bannerUrls } } },
+//       { new: true }
+//     );
+//   } else {
+//     // ✅ Create new banner
+//     banner = await Banner.create({
+//       title: "Smartwear Outfits",
+//       image: bannerUrls,
+//     });
+//   }
 
-  res.status(status.CREATED).json({
-    success: true,
-    message: existingBanner
-      ? "Banner updated successfully"
-      : "Banner created successfully",
-    data: banner,
-  });
-});
+//   res.status(status.CREATED).json({
+//     success: true,
+//     message: existingBanner
+//       ? "Banner updated successfully"
+//       : "Banner created successfully",
+//     data: banner,
+//   });
+// });
 
 
-const findBanner = asyncHandler(async (req, res) => {
-  const banner = await Banner.findOne({ title: "Smartwear Outfits" });
-  if (!banner) {
-    throw new AppError(
-      `Banner with title "${title}" not found.`,
-      status.NOT_FOUND
-    );
-  }
-  sendResponse(res, {
-    statusCode: status.OK,
-    success: true,
-    message: "Banner found successfully",
-    data: banner,
-  });
-});
+// const findBanner = asyncHandler(async (req, res) => {
+//   const banner = await Banner.findOne({ title: "Smartwear Outfits" });
+//   if (!banner) {
+//     throw new AppError(
+//       `Banner with title "${title}" not found.`,
+//       status.NOT_FOUND
+//     );
+//   }
+//   sendResponse(res, {
+//     statusCode: status.OK,
+//     success: true,
+//     message: "Banner found successfully",
+//     data: banner,
+//   });
+// });
 
 const findFooter = asyncHandler(async (req, res) => {
   const  title  =  "Smartwear Outfits" 
@@ -154,7 +154,6 @@ const findFooter = asyncHandler(async (req, res) => {
 });
 export const featuresController = {
   createAndUpdateFooter,
-  createBannerAndUpdate,
-  findBanner,
+  
   findFooter,
 };
