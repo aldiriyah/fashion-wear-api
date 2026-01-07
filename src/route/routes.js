@@ -7,6 +7,7 @@ import { featuresRouter } from "../module/features/features.route.js";
 import { stripePayRoute } from "../module/stripePay/stripePay.route.js";
 import { bannerRouter } from "../module/banner/banner.route.js";
 import contentDataRouter from "../module/contentData/contentData.route.js";
+import { navbarRoute } from "../module/navbar/navbar.route.js";
 
 const router = Router();
 
@@ -42,6 +43,10 @@ const moduleRouter = [
   {
     path: "/content",
     router: contentDataRouter,
+  },
+  {
+    path: "/navbar",
+    router: navbarRoute,
   },
 ];
 
