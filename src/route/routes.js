@@ -6,6 +6,7 @@ import { contactRouter } from "../module/contact/contact.router.js";
 import { featuresRouter } from "../module/features/features.route.js";
 import { stripePayRoute } from "../module/stripePay/stripePay.route.js";
 import { bannerRouter } from "../module/banner/banner.route.js";
+import contentDataRouter from "../module/contentData/contentData.route.js";
 
 const router = Router();
 
@@ -37,6 +38,10 @@ const moduleRouter = [
   {
     path: "/stripe-pay",
     router: stripePayRoute,
+  },
+  {
+    path: "/content",
+    router: contentDataRouter,
   },
 ];
 
