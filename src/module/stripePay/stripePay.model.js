@@ -6,10 +6,9 @@ const stripePaySchema = Schema(
       type: String,
       required: true,
     },
-    productId:{
-        type:Schema.Types.ObjectId,
-        ref:"Product",
-       
+    productId: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
     },
     amount: {
       type: Number,
@@ -35,11 +34,14 @@ const stripePaySchema = Schema(
       type: String,
       required: true,
     },
+    zipCode: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
-
 
 export const StripePay = model("StripePay", stripePaySchema);

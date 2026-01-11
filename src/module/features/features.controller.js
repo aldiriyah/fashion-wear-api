@@ -3,36 +3,23 @@ import sendResponse from "../../utils/sendResponse.js";
 import AppError from "../../error/appError.js";
 import cloudinary from "../../utils/cloudinary.js";
 import status from "http-status";
-import {  Footer } from "./features.model.js";
+import { Footer } from "./features.model.js";
 
 const createAndUpdateFooter = asyncHandler(async (req, res) => {
   const { title } = req.body;
-  
 
-  const footerData = {
+  const existingFooter = await Footer.findOne({
     title: title || "Smartwear Outfits",
-    companyInfo: {
-      address: req.body.address,
-      companyRegistrationNumber: req.body.companyRegistrationNumber,
-      vatRegistrationNumber: req.body.vatRegistrationNumber,
-    },
-    categories: JSON.parse(req.body.categories || '[]'),
-    informationLinks: JSON.parse(req.body.informationLinks || '[]'),
-    contactInfo: {
-      email: req.body.email,
-      phoneNumbers: JSON.parse(req.body.phoneNumbers || '[]'),
-    },
-    socialMedia: JSON.parse(req.body.socialMedia || '[]'),
-    copyright: req.body.copyright,
-  };
+  });
 
-  let logo = footerData.companyInfo.logo;
+  let logo = existingFooter?.companyInfo?.logo;
 
-  
   if (req.file) {
     try {
       const result = await cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+        `data:${req.file.mimetype};base64,${req.file.buffer.toString(
+          "base64"
+        )}`,
         {
           folder: "footer",
           resource_type: "image",
@@ -44,28 +31,47 @@ const createAndUpdateFooter = asyncHandler(async (req, res) => {
     }
   }
 
+  const footerData = {
+    title: title || "Smartwear Outfits",
+    companyInfo: {
+      logo: logo,
+      address: req.body.address,
+      companyRegistrationNumber: req.body.companyRegistrationNumber,
+      vatRegistrationNumber: req.body.vatRegistrationNumber,
+    },
+    categories: JSON.parse(req.body.categories || "[]"),
+    informationLinks: JSON.parse(req.body.informationLinks || "[]"),
+    contactInfo: {
+      email: req.body.email,
+      phoneNumbers: JSON.parse(req.body.phoneNumbers || "[]"),
+    },
+    socialMedia: JSON.parse(req.body.socialMedia || "[]"),
+    copyright: req.body.copyright,
+  };
 
-  footerData.companyInfo.logo = logo;
-
-  const existingFooter = await Footer.findOne({ title: footerData.title });
-  
   let result;
   if (existingFooter) {
-    
     result = await Footer.findOneAndUpdate(
       { title: footerData.title },
       footerData,
       { new: true, runValidators: true }
     );
   } else {
-    
+    if (!logo) {
+      throw new AppError(
+        "Logo is required for new footer creation",
+        status.BAD_REQUEST
+      );
+    }
     result = await Footer.create(footerData);
   }
 
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: existingFooter ? "Footer updated successfully" : "Footer created successfully",
+    message: existingFooter
+      ? "Footer updated successfully"
+      : "Footer created successfully",
     data: result,
   });
 });
@@ -119,7 +125,6 @@ const createAndUpdateFooter = asyncHandler(async (req, res) => {
 //   });
 // });
 
-
 // const findBanner = asyncHandler(async (req, res) => {
 //   const banner = await Banner.findOne({ title: "Smartwear Outfits" });
 //   if (!banner) {
@@ -137,7 +142,7 @@ const createAndUpdateFooter = asyncHandler(async (req, res) => {
 // });
 
 const findFooter = asyncHandler(async (req, res) => {
-  const  title  =  "Smartwear Outfits" 
+  const title = "Smartwear Outfits";
   const footer = await Footer.findOne({ title: title });
   if (!footer) {
     throw new AppError(
@@ -154,6 +159,6 @@ const findFooter = asyncHandler(async (req, res) => {
 });
 export const featuresController = {
   createAndUpdateFooter,
-  
+
   findFooter,
 };

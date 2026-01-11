@@ -14,15 +14,24 @@ const createStripePay = asyncHandler(async (req, res) => {
 });
 
 const getStripePay = asyncHandler(async (req, res) => {
-  const page = req.query.page || 1;
-  const limit = req.query.limit || 10;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
-  const result = await StripePay.find().skip(skip).limit(limit);
+
+  const totalCount = await StripePay.countDocuments();
+  const result = await StripePay.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: "Stripe Pay fetched successfully",
-    data: result,
+    data: {
+      payments: result,
+      totalCount: totalCount,
+    },
   });
 });
 
